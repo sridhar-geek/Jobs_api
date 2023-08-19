@@ -44,7 +44,7 @@ const jwt = require('jsonwebtoken');
 
  // this helps to create jwt token for the user
  UserSchema.methods.createJWT = function () {
-    const token =  jwt.sign( { userId: this._id, name:this.name }, process.env.JWT_SECRET, { expiresIn: process.env.TIME })
+    const token =  jwt.sign( { userId: this._id, name:this.userName }, process.env.JWT_SECRET, { expiresIn: process.env.TIME })
     return token;
 };
 

@@ -8,25 +8,25 @@ const { BadRequestError, UnauthenticatedError } = require('../errors')
 const register = async ( req, res ) => {
     const user = await User.create( req.body )     // password is hashed using pre middleware, here we're just creating user in database
      const token = user.createJWT()                // creation of jwt token is already done, we are storing it in the token varaible
-    return res.status(StatusCodes.CREATED).json( { user: {name:user.userName}, token} )
+     return res.status(StatusCodes.CREATED).json( { user: {name:user.userName}, token} )
 }
-
-
-// in this login function we verify user and assign a token to him finally send back token and username
+    
+    
+    // in this login function we verify user and assign a token to him finally send back token and username
 const login = async ( req, res ) => {
     const { email, password } = req.body
-
+    
     if( !email || !password )
         throw new BadRequestError('Please provide email and password')
-
+    
     const user = await User.findOne( {email} )      // finding whether email id is present in database or not 
     if( !user )
-        throw new UnauthenticatedError('No User found')
-    
+    throw new UnauthenticatedError('No User found')
+
     const isPasswordCorrect = await user.comparePassword( password )  // middleware function checks whether password is valid or not
     if(!isPasswordCorrect)
-        throw new UnauthenticatedError("Invalid Credentials")
-    
+    throw new UnauthenticatedError("Invalid Credentials")
+
     const token = user.createJWT()       // creating token again
     res.status(StatusCodes.OK).json({ user: { name: user.userName },token })
 }

@@ -9,6 +9,7 @@ const connectDB = require("./db/connect")
 // routes
 const userRoutes = require('./routes/auth')
 const jobsRoutes = require('./routes/jobs')
+const authenication = require('./middleware/authentication')
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
   res.send('jobs api');
 });
 app.use('/api/auth', userRoutes)
-app.use('/api/jobs', jobsRoutes)
+app.use('/api/jobs',authenication, jobsRoutes)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
